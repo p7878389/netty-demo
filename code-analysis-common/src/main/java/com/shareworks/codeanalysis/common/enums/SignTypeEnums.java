@@ -9,8 +9,6 @@ import cn.hutool.crypto.asymmetric.SignAlgorithm;
 import cn.hutool.crypto.digest.DigestAlgorithm;
 import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.crypto.digest.Digester;
-import com.shareworks.codeanalysis.common.constant.ExceptionSysConstant;
-import com.shareworks.codeanalysis.common.exception.SignTypeException;
 import com.shareworks.codeanalysis.common.functional.SignTypeStrategy;
 import java.nio.charset.Charset;
 import lombok.AllArgsConstructor;
@@ -47,7 +45,8 @@ public enum SignTypeEnums implements BaseEnums {
                 return value;
             }
         }
-        throw new SignTypeException(ExceptionSysConstant.INTERNAL_SERVER_ERROR, "unknown sign type: " + type);
+//        throw new SignTypeException(ExceptionSysConstant.INTERNAL_SERVER_ERROR, "unknown sign type: " + type);
+        return null;
     }
 
     private static byte[] sha(DigestAlgorithm algorithm, String signKey, byte[] data) {

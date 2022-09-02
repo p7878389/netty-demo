@@ -1,7 +1,7 @@
-package com.shareworks.codeanalysis.common.handler.serialization;
+package com.shareworks.codeanalysis.common.handler.serializer;
 
 import com.alibaba.fastjson.JSONObject;
-import com.shareworks.codeanalysis.common.enums.SerializationTypeEnums;
+import com.shareworks.codeanalysis.common.enums.SerializerTypeEnums;
 import java.nio.charset.Charset;
 import java.util.Objects;
 
@@ -31,7 +31,7 @@ public class ShareworksJsonSerializer implements ShareworksSerializer {
     }
 
     @Override
-    public SerializationTypeEnums getSerializationType() {
-        return SerializationTypeEnums.JSON;
+    public SerializerTypeEnums getSerializerType() {
+        return SerializerTypeEnums.JSON;
     }
 }

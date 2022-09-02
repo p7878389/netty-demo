@@ -1,8 +1,8 @@
 package com.shareworks.codeanalysis.common.message.dto;
 
 import com.shareworks.codeanalysis.common.enums.CommandTypeEnums;
-import com.shareworks.codeanalysis.common.handler.serialization.ShareworksSerializer;
-import com.shareworks.codeanalysis.common.handler.serialization.ShareworksSerializerFactory;
+import com.shareworks.codeanalysis.common.handler.serializer.ShareworksSerializer;
+import com.shareworks.codeanalysis.common.handler.serializer.ShareworksSerializerFactory;
 import com.shareworks.codeanalysis.common.message.ShareworksMessageConvert;
 import com.shareworks.codeanalysis.common.utils.SessionIdUtils;
 import lombok.Data;

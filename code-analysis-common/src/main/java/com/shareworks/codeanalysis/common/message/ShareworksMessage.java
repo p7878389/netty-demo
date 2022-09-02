@@ -1,9 +1,9 @@
 package com.shareworks.codeanalysis.common.message;
 
-import com.shareworks.codeanalysis.common.enums.SerializationTypeEnums;
-import com.shareworks.codeanalysis.common.message.dto.ShareworksBaseDTO;
 import com.shareworks.codeanalysis.common.enums.CommandTypeEnums;
+import com.shareworks.codeanalysis.common.enums.SerializerTypeEnums;
 import com.shareworks.codeanalysis.common.enums.SignTypeEnums;
+import com.shareworks.codeanalysis.common.message.dto.ShareworksBaseDTO;
 import lombok.Data;
 
 /**
@@ -25,7 +25,7 @@ public class ShareworksMessage<T extends ShareworksBaseDTO> {
     /**
      * 序列化类型
      */
-    private SerializationTypeEnums serializationType;
+    private SerializerTypeEnums serializerType;
     /**
      * 签名类型
      */
@@ -50,4 +50,9 @@ public class ShareworksMessage<T extends ShareworksBaseDTO> {
      * 消息内容
      */
     private T messageContent;
+
+    /**
+     * 请求内容签名
+     */
+    private String signature;
 }

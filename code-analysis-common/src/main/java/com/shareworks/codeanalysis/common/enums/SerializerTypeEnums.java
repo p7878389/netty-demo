@@ -1,7 +1,5 @@
 package com.shareworks.codeanalysis.common.enums;
 
-import com.shareworks.codeanalysis.common.constant.ExceptionSysConstant;
-import com.shareworks.codeanalysis.common.exception.SerializationException;
 import java.util.Arrays;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
@@ -14,7 +12,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public enum SerializationTypeEnums implements BaseEnums{
+public enum SerializerTypeEnums implements BaseEnums {
 
     /**
      * json
@@ -32,13 +30,13 @@ public enum SerializationTypeEnums implements BaseEnums{
 
     private final byte type;
 
-    public static SerializationTypeEnums get(byte type) {
-        Optional<SerializationTypeEnums> optional = Arrays.stream(SerializationTypeEnums.values())
+    public static SerializerTypeEnums get(byte type) {
+        Optional<SerializerTypeEnums> optional = Arrays.stream(SerializerTypeEnums.values())
                 .filter(serializationType -> serializationType.getType() == type).findFirst();
         if (optional.isPresent()) {
             return optional.get();
         }
-        throw new SerializationException(ExceptionSysConstant.INTERNAL_SERVER_ERROR, "无效的序列化类型");
+        throw null;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.shareworks.codeanalysis.common.message.dto;
 
-import com.shareworks.codeanalysis.common.enums.SerializationTypeEnums;
+import com.shareworks.codeanalysis.common.enums.SerializerTypeEnums;
 import com.shareworks.codeanalysis.common.enums.SignTypeEnums;
 import io.netty.buffer.ByteBuf;
 import lombok.Builder;
@@ -21,7 +21,7 @@ public class ShareworksEncodeDTO {
      */
     byte version;
     String sessionId;
-    SerializationTypeEnums serializationType;
+    SerializerTypeEnums serializationType;
     /**
      * 签名类型
      */

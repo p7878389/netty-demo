@@ -2,7 +2,7 @@ package com.shareworks.codeanalysis.server;
 
 import cn.hutool.core.util.RandomUtil;
 import com.shareworks.codeanalysis.common.enums.CommandTypeEnums;
-import com.shareworks.codeanalysis.common.enums.SerializationTypeEnums;
+import com.shareworks.codeanalysis.common.enums.SerializerTypeEnums;
 import com.shareworks.codeanalysis.common.enums.SignTypeEnums;
 import com.shareworks.codeanalysis.common.handler.ShareworksMessageDecoder;
 import com.shareworks.codeanalysis.common.handler.ShareworksMessageEncoder;
@@ -29,7 +29,7 @@ public class MessageEncoderTest extends MessageBaseTest {
         message = new ShareworksMessage<>();
         message.setMagicNumber(RandomUtil.randomInt(4));
         message.setMainVersion((byte) 1);
-        message.setSerializationType(SerializationTypeEnums.JSON);
+        message.setSerializerType(SerializerTypeEnums.JSON);
         message.setSignType(SignTypeEnums.MD5_WITH_RSA);
         message.setSignKey(privateKey);
         message.setSessionId(SessionIdUtils.generateId());

@@ -14,7 +14,7 @@ import com.shareworks.codeanalysis.common.message.dto.ShareworksBaseDTO;
 import com.shareworks.codeanalysis.common.utils.SessionIdUtils;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.SimpleChannelInboundHandler;
 import java.util.Objects;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
 @Component("AuthorizationRequestHandler")
 @Sharable
 @Slf4j
-public class AuthorizationRequestHandler extends ChannelInboundHandlerAdapter {
+public class AuthorizationRequestHandler extends SimpleChannelInboundHandler<ShareworksMessage<ShareworksBaseDTO>> {
 
     @Resource
     private NettyClientProperties nettyClientProperties;
@@ -57,10 +57,9 @@ public class AuthorizationRequestHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        ShareworksMessage<ShareworksBaseDTO> message = (ShareworksMessage<ShareworksBaseDTO>) msg;
-        ShareworksBaseDTO shareworksBaseDTO = message.getMessageContent();
-        if (!CommandTypeEnums.AUTHENTICATION_ACK.equals(message.getCommandType())) {
+    protected void channelRead0(ChannelHandlerContext ctx, ShareworksMessage<ShareworksBaseDTO> msg) throws Exception {
+        ShareworksBaseDTO shareworksBaseDTO = msg.getMessageContent();
+        if (!CommandTypeEnums.AUTHENTICATION_ACK.equals(msg.getCommandType())) {
             ctx.fireChannelRead(msg);
             return;
         }

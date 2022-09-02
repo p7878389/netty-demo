@@ -1,8 +1,10 @@
 package com.shareworks.codeanalysis.server.config.netty.handler;
 
+import com.shareworks.codeanalysis.common.message.ShareworksMessage;
+import com.shareworks.codeanalysis.common.message.dto.ShareworksBaseDTO;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.SimpleChannelInboundHandler;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,10 +14,10 @@ import org.springframework.stereotype.Component;
  */
 @Component("ServerBusinessHandler")
 @Sharable
-public class ServerBusinessHandler extends ChannelInboundHandlerAdapter {
+public class ServerBusinessHandler extends SimpleChannelInboundHandler<ShareworksMessage<ShareworksBaseDTO>> {
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        super.channelRead(ctx, msg);
+    protected void channelRead0(ChannelHandlerContext ctx, ShareworksMessage<ShareworksBaseDTO> msg) throws Exception {
+
     }
 }

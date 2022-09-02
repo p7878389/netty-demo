@@ -11,7 +11,7 @@ import com.shareworks.codeanalysis.server.config.netty.NettyChannelDTO;
 import com.shareworks.codeanalysis.server.config.netty.NettySocketHolder;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.SimpleChannelInboundHandler;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -25,13 +25,12 @@ import org.springframework.stereotype.Component;
 @Component("AuthorizationResponseHandler")
 @Sharable
 @Slf4j
-public class AuthorizationResponseHandler extends ChannelInboundHandlerAdapter {
+public class AuthorizationResponseHandler extends SimpleChannelInboundHandler<ShareworksMessage<ShareworksBaseDTO>> {
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        ShareworksMessage<ShareworksBaseDTO> message = (ShareworksMessage<ShareworksBaseDTO>) msg;
-        ShareworksBaseDTO shareworksBaseDTO = message.getMessageContent();
-        if (!CommandTypeEnums.AUTHENTICATION.equals(message.getCommandType())) {
+    protected void channelRead0(ChannelHandlerContext ctx, ShareworksMessage<ShareworksBaseDTO> msg) {
+        ShareworksBaseDTO shareworksBaseDTO = msg.getMessageContent();
+        if (!CommandTypeEnums.AUTHENTICATION.equals(msg.getCommandType())) {
             NettyChannelDTO nettyChannelDTO = NettySocketHolder.get(ctx.channel());
             if (Objects.nonNull(nettyChannelDTO)) {
                 ctx.fireChannelRead(msg);
@@ -40,8 +39,8 @@ public class AuthorizationResponseHandler extends ChannelInboundHandlerAdapter {
             ShareworksAuthRespDTO authRespDTO = new ShareworksAuthRespDTO();
             authRespDTO.setErrorCode(ExceptionSysConstant.INTERNAL_SERVER_ERROR);
             authRespDTO.setErrorMsg("连接未认证");
-            message.setMessageContent(authRespDTO);
-            ctx.fireChannelRead(message);
+            msg.setMessageContent(authRespDTO);
+            ctx.fireChannelRead(msg);
             ctx.close();
             if (log.isDebugEnabled()) {
                 log.debug("connect unauthenticated , prepare automatically disconnect");
@@ -50,12 +49,12 @@ public class AuthorizationResponseHandler extends ChannelInboundHandlerAdapter {
         }
 
         if (Objects.isNull(shareworksBaseDTO)) {
-            message.setCommandType(CommandTypeEnums.AUTHENTICATION_ACK);
+            msg.setCommandType(CommandTypeEnums.AUTHENTICATION_ACK);
             ShareworksAuthRespDTO authRespDTO = new ShareworksAuthRespDTO();
             authRespDTO.setErrorCode(ExceptionSysConstant.INTERNAL_SERVER_ERROR);
             authRespDTO.setErrorMsg("认证失败，请求详情为空");
-            message.setMessageContent(authRespDTO);
-            ctx.writeAndFlush(message);
+            msg.setMessageContent(authRespDTO);
+            ctx.writeAndFlush(msg);
             if (log.isDebugEnabled()) {
                 log.debug("认证失败，请求详情为空，自动断开连接");
                 log.debug("connect unauthenticated , request body is null, prepare automatically disconnect");
@@ -69,8 +68,8 @@ public class AuthorizationResponseHandler extends ChannelInboundHandlerAdapter {
             ShareworksAuthRespDTO authRespDTO = new ShareworksAuthRespDTO();
             authRespDTO.setErrorCode(ExceptionSysConstant.INTERNAL_SERVER_ERROR);
             authRespDTO.setErrorMsg("认证失败，appKey或appSecret不能为空");
-            message.setMessageContent(authRespDTO);
-            ctx.writeAndFlush(message);
+            msg.setMessageContent(authRespDTO);
+            ctx.writeAndFlush(msg);
             if (log.isDebugEnabled()) {
                 log.debug("authentication failed , appKey or appSecret is required , prepare automatically disconnect");
             }
@@ -78,18 +77,18 @@ public class AuthorizationResponseHandler extends ChannelInboundHandlerAdapter {
             return;
         }
 
-        message.setCommandType(CommandTypeEnums.AUTHENTICATION_ACK);
+        msg.setCommandType(CommandTypeEnums.AUTHENTICATION_ACK);
         ShareworksAuthRespDTO authRespDTO = new ShareworksAuthRespDTO();
         authRespDTO.setErrorCode(ExceptionSysConstant.SUCCESS);
         authRespDTO.setSessionId(SessionIdUtils.generateId());
         authRespDTO.setTraceId(authReqDTO.getTraceId());
-        message.setMessageContent(authRespDTO);
+        msg.setMessageContent(authRespDTO);
 
         NettyChannelDTO channelDTO = NettyChannelDTO.builder()
                 .channel(ctx.channel())
                 .appKey(authReqDTO.getAppKey())
                 .sessionId(authRespDTO.getSessionId())
-                .signType(message.getSignType())
+                .signType(msg.getSignType())
                 .build();
         NettySocketHolder.put(ctx.channel(), channelDTO);
         if (log.isDebugEnabled()) {
@@ -97,7 +96,7 @@ public class AuthorizationResponseHandler extends ChannelInboundHandlerAdapter {
                     authRespDTO.getSessionId());
         }
         // 认证成功
-        ctx.writeAndFlush(message);
+        ctx.writeAndFlush(msg);
     }
 
 

@@ -36,7 +36,6 @@ public class NettyClientServerInitializer extends ChannelInitializer<SocketChann
         ChannelPipeline pipeline = socketChannel.pipeline();
         pipeline.addLast(new IdleStateHandler(30, 30, 60, TimeUnit.SECONDS));
         pipeline.addLast(new LoggingHandler(LogLevel.INFO));
-//        pipeline.addLast(new LengthFieldBasedFrameDecoder(65535, 2, 2, 0, 2));
         // 添加对byte数组的编解码，netty提供了很多编解码器，你们可以根据需要选择
         pipeline.addLast(new ShareworksMessageDecoder());
         pipeline.addLast(new ShareworksMessageEncoder());

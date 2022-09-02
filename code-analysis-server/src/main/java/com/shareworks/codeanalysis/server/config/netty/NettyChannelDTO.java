@@ -1,6 +1,6 @@
 package com.shareworks.codeanalysis.server.config.netty;
 
-import com.shareworks.codeanalysis.common.enums.SerializationTypeEnums;
+import com.shareworks.codeanalysis.common.enums.SerializerTypeEnums;
 import com.shareworks.codeanalysis.common.enums.SignTypeEnums;
 import io.netty.channel.Channel;
 import lombok.Builder;
@@ -25,7 +25,7 @@ public class NettyChannelDTO {
 
     private Channel channel;
 
-    private SerializationTypeEnums serializationType;
+    private SerializerTypeEnums serializationType;
 
     private byte version;
 }

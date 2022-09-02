@@ -20,7 +20,7 @@ public class ShareworksMessageEncoder extends MessageToByteEncoder<ShareworksMes
     protected void encode(ChannelHandlerContext ctx, ShareworksMessage<ShareworksBaseDTO> shareworksMessage,
             ByteBuf byteBuf) {
         ShareworksEncodeDTO shareworksEncodeDTO = ShareworksEncodeDTO.builder()
-                .serializationType(shareworksMessage.getSerializationType())
+                .serializationType(shareworksMessage.getSerializerType())
                 .out(byteBuf)
                 .version(shareworksMessage.getMainVersion())
                 .sessionId(shareworksMessage.getSessionId())

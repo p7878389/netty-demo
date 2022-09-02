@@ -3,7 +3,7 @@ package com.shareworks.codeanalysis.server.config.netty.handler;
 import cn.hutool.core.util.RandomUtil;
 import com.shareworks.codeanalysis.common.constant.ExceptionSysConstant;
 import com.shareworks.codeanalysis.common.enums.CommandTypeEnums;
-import com.shareworks.codeanalysis.common.enums.SerializationTypeEnums;
+import com.shareworks.codeanalysis.common.enums.SerializerTypeEnums;
 import com.shareworks.codeanalysis.common.enums.SignTypeEnums;
 import com.shareworks.codeanalysis.common.message.ShareworksMessage;
 import com.shareworks.codeanalysis.common.message.dto.ShareworksBaseDTO;
@@ -15,7 +15,7 @@ import com.shareworks.codeanalysis.server.config.netty.NettySocketHolder;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import java.util.Objects;
@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
 @Component("HeartBeatResponseHandler")
 @Sharable
 @Slf4j
-public class HeartBeatResponseHandler extends ChannelInboundHandlerAdapter {
+public class HeartBeatResponseHandler extends SimpleChannelInboundHandler<ShareworksMessage<ShareworksBaseDTO>> {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
@@ -38,28 +38,27 @@ public class HeartBeatResponseHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        ShareworksMessage<ShareworksBaseDTO> message = (ShareworksMessage<ShareworksBaseDTO>) msg;
-        if (!CommandTypeEnums.PING.equals(message.getCommandType())) {
+    protected void channelRead0(ChannelHandlerContext ctx, ShareworksMessage<ShareworksBaseDTO> msg) throws Exception {
+        if (!CommandTypeEnums.PING.equals(msg.getCommandType())) {
             ctx.fireChannelRead(msg);
             return;
         }
-        ShareworksBaseDTO messageContent = message.getMessageContent();
+        ShareworksBaseDTO messageContent = msg.getMessageContent();
 
         ShareworksHeartbeatRespDTO heartbeatRespDTO = new ShareworksHeartbeatRespDTO();
 
         if (Objects.isNull(messageContent)) {
             heartbeatRespDTO.setErrorCode(ExceptionSysConstant.INTERNAL_SERVER_ERROR);
             heartbeatRespDTO.setErrorMsg("心跳检测失败，详情不存在");
-            message.setMessageContent(heartbeatRespDTO);
-            ctx.writeAndFlush(message);
+            msg.setMessageContent(heartbeatRespDTO);
+            ctx.writeAndFlush(msg);
             return;
         }
 
         heartbeatRespDTO.setErrorCode(ExceptionSysConstant.SUCCESS);
         heartbeatRespDTO.setTraceId(messageContent.getTraceId());
-        message.setMessageContent(heartbeatRespDTO);
-        ctx.writeAndFlush(message);
+        msg.setMessageContent(heartbeatRespDTO);
+        ctx.writeAndFlush(msg);
         ctx.fireChannelActive();
     }
 
@@ -84,7 +83,7 @@ public class HeartBeatResponseHandler extends ChannelInboundHandlerAdapter {
 //                return;
                 nettyChannelDTO = NettyChannelDTO.builder()
                         .sessionId(SessionIdUtils.generateId())
-                        .serializationType(SerializationTypeEnums.JSON)
+                        .serializationType(SerializerTypeEnums.JSON)
                         .signType(SignTypeEnums.MD5)
                         .version((byte) 1)
                         .build();
@@ -93,7 +92,7 @@ public class HeartBeatResponseHandler extends ChannelInboundHandlerAdapter {
             message.setSessionId(nettyChannelDTO.getSessionId());
             message.setMessageContent(new ShareworksHeartbeatReqDTO());
             message.setCommandType(CommandTypeEnums.PONG);
-            message.setSerializationType(nettyChannelDTO.getSerializationType());
+            message.setSerializerType(nettyChannelDTO.getSerializationType());
             message.setMainVersion(nettyChannelDTO.getVersion());
             message.setSignType(nettyChannelDTO.getSignType());
             message.setMagicNumber(RandomUtil.randomInt(4));

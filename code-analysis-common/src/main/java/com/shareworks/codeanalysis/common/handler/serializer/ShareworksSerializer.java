@@ -1,6 +1,6 @@
-package com.shareworks.codeanalysis.common.handler.serialization;
+package com.shareworks.codeanalysis.common.handler.serializer;
 
-import com.shareworks.codeanalysis.common.enums.SerializationTypeEnums;
+import com.shareworks.codeanalysis.common.enums.SerializerTypeEnums;
 
 /**
  * @author martin.peng
@@ -33,5 +33,5 @@ public interface ShareworksSerializer {
      *
      * @return
      */
-    SerializationTypeEnums getSerializationType();
+    SerializerTypeEnums getSerializerType();
 }

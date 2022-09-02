@@ -21,7 +21,7 @@ public class NettyUtils {
         shareworksMessage.setSignType(nettyClientProperties.getSignType());
         shareworksMessage.setSignKey(nettyClientProperties.getSignKey());
         shareworksMessage.setCommandType(reqDTO.getCommandType());
-        shareworksMessage.setSerializationType(nettyClientProperties.getSerializationType());
+        shareworksMessage.setSerializerType(nettyClientProperties.getSerializationType());
         shareworksMessage.setMessageContent(reqDTO);
         shareworksMessage.setSessionId(NettyClientHolder.getSessionId());
         return shareworksMessage;

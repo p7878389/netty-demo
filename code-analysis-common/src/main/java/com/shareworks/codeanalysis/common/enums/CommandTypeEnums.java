@@ -5,6 +5,8 @@ import com.shareworks.codeanalysis.common.message.dto.ShareworksAuthRespDTO;
 import com.shareworks.codeanalysis.common.message.dto.ShareworksBaseDTO;
 import com.shareworks.codeanalysis.common.message.dto.ShareworksHeartbeatReqDTO;
 import com.shareworks.codeanalysis.common.message.dto.ShareworksHeartbeatRespDTO;
+import com.shareworks.codeanalysis.common.message.dto.ShareworksProtocolErrorReqDTO;
+import com.shareworks.codeanalysis.common.message.dto.ShareworksProtocolErrorRespDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -53,6 +55,11 @@ public enum CommandTypeEnums implements BaseEnums {
     PONG((byte) 8, ShareworksHeartbeatReqDTO.class),
     PONG_ACK((byte) 9, ShareworksHeartbeatRespDTO.class),
 
+    /**
+     * 协议解析错误
+     */
+    PROTOCOL_ERROR((byte) 10, ShareworksProtocolErrorReqDTO.class),
+    PROTOCOL_ERROR_ACK((byte) 11, ShareworksProtocolErrorRespDTO.class),
     ;
 
     private final byte type;
@@ -64,7 +71,8 @@ public enum CommandTypeEnums implements BaseEnums {
                 return value;
             }
         }
-        throw new RuntimeException("unsupported type: " + type);
+//        throw new RuntimeException("unsupported type: " + type);
+        return null;
     }
 
     @Override

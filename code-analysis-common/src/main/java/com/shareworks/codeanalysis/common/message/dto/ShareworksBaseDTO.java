@@ -14,16 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 public abstract class ShareworksBaseDTO implements ShareworksMessageConvert {
 
     /**
-     * 请求内容签名
-     */
-    private String signature;
-
-    /**
-     * 会话ID
-     */
-    private String sessionId;
-
-    /**
      * 请求ID
      */
     private String traceId;

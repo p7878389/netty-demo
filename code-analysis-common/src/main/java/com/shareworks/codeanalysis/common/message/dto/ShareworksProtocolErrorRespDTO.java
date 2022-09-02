@@ -7,14 +7,14 @@ import lombok.EqualsAndHashCode;
 /**
  * @author martin.peng
  * @Desc
- * @date 2022/8/30 15:02
+ * @date 2022/9/2 16:56
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ShareworksHeartbeatRespDTO extends ShareworksBaseDTO {
+public class ShareworksProtocolErrorRespDTO extends ShareworksBaseDTO {
 
     @Override
     public CommandTypeEnums getCommandType() {
-        return CommandTypeEnums.PING_ACK;
+        return CommandTypeEnums.PROTOCOL_ERROR_ACK;
     }
 }

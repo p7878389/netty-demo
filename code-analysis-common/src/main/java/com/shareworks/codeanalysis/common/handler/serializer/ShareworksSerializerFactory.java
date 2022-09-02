@@ -1,7 +1,7 @@
-package com.shareworks.codeanalysis.common.handler.serialization;
+package com.shareworks.codeanalysis.common.handler.serializer;
 
 import com.shareworks.codeanalysis.common.constant.ExceptionSysConstant;
-import com.shareworks.codeanalysis.common.enums.SerializationTypeEnums;
+import com.shareworks.codeanalysis.common.enums.SerializerTypeEnums;
 import com.shareworks.codeanalysis.common.exception.SerializationException;
 import java.util.Map;
 import java.util.Objects;
@@ -15,11 +15,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @SuppressWarnings("JavadocDeclaration")
 public class ShareworksSerializerFactory {
 
-    private static final Map<SerializationTypeEnums, ShareworksSerializer> SERIALIZATION_MAP = new ConcurrentHashMap<>(
-            SerializationTypeEnums.values().length);
+    private static final Map<SerializerTypeEnums, ShareworksSerializer> SERIALIZATION_MAP = new ConcurrentHashMap<>(
+            SerializerTypeEnums.values().length);
 
     static {
-        SERIALIZATION_MAP.put(SerializationTypeEnums.JSON, ShareworksJsonSerializer.INSTANCE);
+        SERIALIZATION_MAP.put(SerializerTypeEnums.JSON, ShareworksJsonSerializer.INSTANCE);
     }
 
     /**
@@ -28,7 +28,7 @@ public class ShareworksSerializerFactory {
      * @param serializationType
      * @return
      */
-    public static ShareworksSerializer getSerializationType(SerializationTypeEnums serializationType) {
+    public static ShareworksSerializer getSerializationType(SerializerTypeEnums serializationType) {
         if (Objects.isNull(serializationType)) {
             throw new SerializationException(ExceptionSysConstant.INTERNAL_SERVER_ERROR, "序列化方式不能为空");
         }

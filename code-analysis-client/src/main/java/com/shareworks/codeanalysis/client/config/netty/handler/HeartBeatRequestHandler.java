@@ -8,7 +8,7 @@ import com.shareworks.codeanalysis.common.message.ShareworksMessage;
 import com.shareworks.codeanalysis.common.message.dto.ShareworksBaseDTO;
 import com.shareworks.codeanalysis.common.message.dto.ShareworksHeartbeatReqDTO;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import java.util.Set;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Slf4j
-public class HeartBeatRequestHandler extends ChannelInboundHandlerAdapter {
+public class HeartBeatRequestHandler extends SimpleChannelInboundHandler<ShareworksMessage<ShareworksBaseDTO>> {
 
     @Resource
     private NettyClientProperties nettyClientProperties;
@@ -32,9 +32,8 @@ public class HeartBeatRequestHandler extends ChannelInboundHandlerAdapter {
             IdleState.ALL_IDLE);
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        ShareworksMessage<ShareworksBaseDTO> message = (ShareworksMessage<ShareworksBaseDTO>) msg;
-        if (CommandTypeEnums.PING_ACK.equals(message.getCommandType())) {
+    protected void channelRead0(ChannelHandlerContext ctx, ShareworksMessage<ShareworksBaseDTO> msg) {
+        if (CommandTypeEnums.PING_ACK.equals(msg.getCommandType())) {
             log.debug("received ping packet");
             ctx.fireChannelActive();
             return;

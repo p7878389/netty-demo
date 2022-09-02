@@ -2,7 +2,7 @@
 
 - NettyClientStartListener spring容器启动后执行netty 启动逻辑
 - NettyClient 线程组、断线重连监听（NettyConnectionListener）处理器初始化，jvm关闭钩子
-- MessageEncoder、MessageDecoder 自定义编码、解码器
+- ShareworksMessageEncoder、ShareworksMessageDecoder 自定义编码、解码器
 
 ## netty相关处理器
 
@@ -18,7 +18,7 @@
 - BusinessHandler（业务处理）
   > 处理后续业务逻辑 拉取任务、推送分析结果、jira分析等等
 
-- GlobalExceptionHandler（全局异常处理器）
+- ClientGlobalExceptionHandler（全局异常处理器）
   > netty 调用链中出现的异常拦截处理器
 
 ## 基于spring scheduler的动态定时任务（未测试）

@@ -37,11 +37,11 @@ public class MessageDecodeTest extends MessageBaseTest {
         ShareworksMessage<ShareworksBaseDTO> shareworksMessage = embeddedChannel.readInbound();
         Assertions.assertEquals(shareworksMessage.getSessionId(), sessionId, "sessionId 解码错误");
         Assertions.assertEquals(shareworksMessage.getMessageContent().getTraceId(), traceId, "traceId 解码错误");
-        Assertions.assertEquals(shareworksMessage.getMessageContent().getSignature(),
+        Assertions.assertEquals(shareworksMessage.getSignature(),
                 new String(signBytes, Charset.defaultCharset()), "sign 解码错误");
         if (SignTypeEnums.MD5_WITH_RSA.equals(shareworksMessage.getSignType())) {
             Sign sign = SecureUtil.sign(SignAlgorithm.MD5withRSA, privateKey, publicKey);
-            byte[] decodeHex = HexUtil.decodeHex(shareworksMessage.getMessageContent().getSignature());
+            byte[] decodeHex = HexUtil.decodeHex(shareworksMessage.getSignature());
             boolean verify = sign.verify(bodyByte, decodeHex);
             System.out.println(verify);
         }

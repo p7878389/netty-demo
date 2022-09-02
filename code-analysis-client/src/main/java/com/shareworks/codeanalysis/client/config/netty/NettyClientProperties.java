@@ -1,6 +1,6 @@
 package com.shareworks.codeanalysis.client.config.netty;
 
-import com.shareworks.codeanalysis.common.enums.SerializationTypeEnums;
+import com.shareworks.codeanalysis.common.enums.SerializerTypeEnums;
 import com.shareworks.codeanalysis.common.enums.SignTypeEnums;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -20,7 +20,7 @@ public class NettyClientProperties {
 
     private int port;
 
-    private SerializationTypeEnums serializationType;
+    private SerializerTypeEnums serializationType;
 
     private SignTypeEnums signType;
 
