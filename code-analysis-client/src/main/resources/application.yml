@@ -1,0 +1,20 @@
+server:
+  port: 9090
+
+netty:
+  client:
+    ip_address: 127.0.0.1
+    port: 8081
+    serialization-type: JSON
+    app_key: app_key
+    app_secret: app_secret
+    sign-type: MD5
+    sign-key: sign_key
+    version: 1
+    retry-interval: 30
+    retry-count: 3
+
+spring:
+  thread-pool:
+    await-termination-millis: 600
+    pool-size: 5
